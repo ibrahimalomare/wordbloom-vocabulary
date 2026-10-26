@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#476b60"><meta name="description" content="Offline English-Arabic vocabulary flashcards with spaced repetition">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
+<title>WordBloom — Vocabulary</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="logo">✳</span><div><b>WordBloom</b><small>Little words. Lasting progress.</small></div></div><button id="themeBtn" class="iconbtn" aria-label="Toggle theme">☾</button></header>
+<main>
+<section id="homeView">
+  <div class="hero"><p class="eyebrow">YOUR DAILY WORD HABIT</p><h1>Grow your<br><em>vocabulary.</em></h1><p class="muted">A few minutes a day makes a difference.</p><button class="primary" id="startReview">Start daily review <span>→</span></button></div>
+  <div class="stats"><article><span class="stat-icon">✦</span><strong id="statLearned">0</strong><small>Learned</small></article><article><span class="stat-icon">◷</span><strong id="statRemaining">0</strong><small>Remaining</small></article><article><span class="stat-icon">↻</span><strong id="statDue">0</strong><small>Due today</small></article><article><span class="stat-icon">♨</span><strong id="statStreak">0</strong><small>Day streak</small></article></div>
+  <div class="sectionhead"><div><p class="eyebrow">YOUR LIBRARY</p><h2>Study decks</h2></div><button class="textbtn" id="manageDecks">Manage</button></div>
+  <div id="deckList" class="decklist"></div>
+  <div class="sectionhead"><div><p class="eyebrow">QUICK ACCESS</p><h2>All words</h2></div><button class="textbtn" id="addWordTop">＋ Add word</button></div>
+  <div class="searchwrap"><span>⌕</span><input id="search" placeholder="Search English or Arabic…" autocomplete="off"></div>
+  <div id="wordList" class="wordlist"></div>
+  <div class="tools"><button class="secondary" id="exportBtn">Export JSON</button><button class="secondary" id="exportCsvBtn">Export CSV</button><button class="secondary" id="importBtn">Import CSV / JSON</button><input type="file" id="fileInput" accept=".json,.csv,application/json,text/csv" hidden></div>
+  <p class="footnote">Your words stay on this device. Export a backup occasionally.</p>
+</section>
+<section id="studyView" class="hidden">
+ <div class="studyhead"><button class="iconbtn" id="exitStudy">←</button><div><small id="studyDeckName">Daily review</small><div class="progress"><span id="progressBar"></span></div></div><span id="cardCount" class="count">1 / 1</span></div>
+ <div class="study-meta"><span id="directionLabel">ENGLISH → ARABIC</span><button id="directionBtn" class="textbtn">⇄ Direction</button></div>
+ <button id="flashcard" class="flashcard" aria-label="Flip flashcard"><div class="cardinner"><div class="cardfront"><span class="cardlabel">WORD</span><strong id="frontText">Resilient</strong><span class="tapnote">Tap to reveal answer ↗</span></div><div class="cardback"><span class="cardlabel">MEANING & EXAMPLE</span><strong id="backMeaning"></strong><p id="backDefinition"></p><blockquote id="backExample"></blockquote><span class="tapnote">Tap to see the word ↗</span></div></div></button>
+ <div class="answerhint" id="answerHint">Think of the meaning before revealing.</div>
+ <div class="controls"><button id="prevCard" class="secondary roundbtn">← Previous</button><button id="flipBtn" class="primary roundbtn">Reveal answer</button><button id="nextCard" class="secondary roundbtn">Next →</button></div>
+ <div id="ratingControls" class="ratings hidden"><button id="needPractice" class="practice">↻ Need practice</button><button id="markKnown" class="known">✓ Known</button></div>
+ <button id="shuffleBtn" class="textbtn center">⤨ Shuffle cards</button>
+</section>
+<section id="editorView" class="hidden">
+ <div class="pagehead"><button class="iconbtn" id="closeEditor">←</button><div><p class="eyebrow">VOCABULARY</p><h2 id="editorTitle">Add a word</h2></div></div>
+ <form id="wordForm" class="formcard">
+  <input type="hidden" id="wordId">
+  <label>English word <input id="english" required maxlength="120" placeholder="e.g. resilient"></label>
+  <label>Arabic meaning <input id="arabic" required maxlength="180" placeholder="e.g. مرن / قادر على التعافي"></label>
+  <label>Simple English definition <textarea id="definition" rows="2" placeholder="Able to recover quickly after difficulty."></textarea></label>
+  <label>Example sentence <textarea id="example" rows="2" placeholder="She stayed resilient during hard times."></textarea></label>
+  <label>Deck / category <div class="inline"><select id="wordDeck"></select><input id="newDeckName" placeholder="Or create new deck"></div></label>
+  <div class="formactions"><button type="button" id="deleteWord" class="danger hidden">Delete</button><button class="primary" type="submit">Save word</button></div>
+ </form>
+</section>
+<section id="decksView" class="hidden">
+ <div class="pagehead"><button class="iconbtn" id="closeDecks">←</button><div><p class="eyebrow">ORGANIZE</p><h2>Manage decks</h2></div></div>
+ <form id="deckForm" class="deckcreate"><input id="deckName" required placeholder="New deck name"><button class="primary">＋ Add</button></form>
+ <div id="manageDeckList" class="manage-decks"></div>
+</section>
+<section id="statsView" class="hidden">
+ <div class="pagehead"><button class="iconbtn" id="closeStats">←</button><div><p class="eyebrow">YOUR JOURNEY</p><h2>Learning stats</h2></div></div>
+ <div class="stats bigstats"><article><strong id="bigTotal">0</strong><small>Total words</small></article><article><strong id="bigMastered">0</strong><small>Mastered</small></article><article><strong id="bigReviews">0</strong><small>Reviews done</small></article></div>
+ <div class="formcard"><h3>How spaced repetition works</h3><p class="muted">Words you miss return soon. Words you know come back after longer intervals. Your review history is stored on this device.</p><p id="streakText"></p></div>
+</section>
+</main>
+<nav class="bottomnav"><button class="navitem active" data-view="homeView"><span>⌂</span>Home</button><button class="navitem" id="navStudy"><span>▤</span>Study</button><button class="navitem" id="navAdd"><span>＋</span>Add word</button><button class="navitem" id="navStats"><span>◔</span>Stats</button></nav>
+<div id="toast" role="status" class="toast"></div>
+<script src="app.js"></script>
+</body></html>
